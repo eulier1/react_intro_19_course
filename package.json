@@ -1,0 +1,16 @@
+{
+  "name": "padre-ginos",
+  "version": "1.0.0",
+  "description": "This is a companion repository for the [Complete Intro to React, v9 ](https://frontendmasters.com/courses/complete-react-v9/)course on Frontend Masters.",
+  "main": "index.js",
+  "scripts": {
+    "format": "prettier --write \"src/**/*.{js,jsx,css}\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "^3.3.3"
+  }
+}
