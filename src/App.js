@@ -3,11 +3,9 @@ const Pizza = (props) => {
     "div",
     {},
     React.createElement("h1", {}, props.name),
-    React.createElement("div", {}, props.description)
+    React.createElement("div", {}, props.description),
   );
 };
-//"Pepperoni Pizza"
-// "Mozzarella Cheese, Pepperoni"
 
 const App = () => {
   return React.createElement("div", {}, [
