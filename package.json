@@ -4,6 +4,9 @@
   "description": "This is a companion repository for the [Complete Intro to React, v9 ](https://frontendmasters.com/courses/complete-react-v9/)course on Frontend Masters.",
   "main": "index.js",
   "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "preview": "vite preview",
     "format": "prettier --write \"src/**/*.{js,jsx,css}\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint"
@@ -11,10 +14,17 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "type": "module",
   "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
     "eslint": "^9.9.1",
     "eslint-config-prettier": "^9.1.0",
     "globals": "^15.9.0",
-    "prettier": "^3.3.3"
+    "prettier": "^3.3.3",
+    "vite": "^5.4.2"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   }
 }
