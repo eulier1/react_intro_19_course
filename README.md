@@ -1,3 +1,5 @@
+### Padre Gino's Pizza
+https://github.com/user-attachments/assets/a6723421-7f28-4f5d-9252-3ba3280acc0c
 ## Complete Intro to React, v9 Course
 
 This is a companion repository for the [Complete Intro to React, v9 ](https://frontendmasters.com/courses/complete-react-v9/)course on Frontend Masters.
@@ -15,3 +17,13 @@ Take notes about :
 7. Advanced React Techniques
 8. Testing
 9. Demos
+
+## Instructions
+
+### Setup the server 
+- Navigate to /api
+- Run ```npm run dev```
+
+### Setup the client
+- In the root folder
+- Run ```npm run dev```
