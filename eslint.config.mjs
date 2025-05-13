@@ -1,12 +1,11 @@
 import js from "@eslint/js";
 import globals from "globals";
 import prettier from "eslint-config-prettier";
-import { reactPlugin } from "eslint-plugin-react";
+import reactPlugin from "eslint-plugin-react";
+import pluginQuery from "@tanstack/eslint-plugin-query";
 
-// The following is a comment for VSCode
 /** @type {import('eslint').Linter.Config[]} */
 export default [
-  // This is a non-controversial Eslint rules
   js.configs.recommended,
   {
     ...reactPlugin.configs.flat.recommended,
@@ -17,6 +16,7 @@ export default [
     },
   },
   reactPlugin.configs.flat["jsx-runtime"],
+  ...pluginQuery.configs["flat/recommended"],
   {
     files: ["**/*.js", "**/*.jsx"],
     languageOptions: {
@@ -32,7 +32,5 @@ export default [
       "react/prop-types": "off",
     },
   },
-  // Add prettier always at last because it turns off stuff
-  // i.e. don't check new lines, code formatting...
   prettier,
 ];
