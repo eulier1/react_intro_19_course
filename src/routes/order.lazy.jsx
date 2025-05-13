@@ -1,33 +1,25 @@
-import { useContext, useEffect, useState } from "react";
-import Pizza from "./Pizza";
-import Cart from "./Cart";
-import { CartContext } from "./contexts";
+import { useState, useEffect, useContext } from "react";
+import { createLazyFileRoute } from "@tanstack/react-router";
+import { CartContext } from "../contexts";
+import Cart from "../Cart";
+import Pizza from "../Pizza";
 
+// feel free to change en-US / USD to your locale
 const intl = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
 });
 
-export default function Order() {
-  const [pizzaTypes, setPizzaTypes] = useState([]);
+export const Route = createLazyFileRoute("/order")({
+  component: Order,
+});
+
+function Order() {
   const [pizzaType, setPizzaType] = useState("pepperoni");
   const [pizzaSize, setPizzaSize] = useState("M");
-  const [cart, setCart] = useContext(CartContext);
+  const [pizzaTypes, setPizzaTypes] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  let price, selectedPizza;
-
-  if (!loading) {
-    selectedPizza = pizzaTypes.find((pizza) => pizzaType === pizza.id);
-    price = selectedPizza.sizes[pizzaSize];
-  }
-
-  async function fetchPizzaTypes() {
-    const pizzaRes = await fetch("/api/pizzas");
-    const pizzaJson = await pizzaRes.json();
-    setPizzaTypes(pizzaJson);
-    setLoading(false);
-  }
+  const [cart, setCart] = useContext(CartContext);
 
   async function checkout() {
     setLoading(true);
@@ -35,24 +27,40 @@ export default function Order() {
     await fetch("/api/order", {
       method: "POST",
       headers: {
-        "Content-type": "application/json",
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ cart }),
+      body: JSON.stringify({
+        cart,
+      }),
     });
 
     setCart([]);
     setLoading(false);
   }
 
+  let price, selectedPizza;
+  if (!loading) {
+    selectedPizza = pizzaTypes.find((pizza) => pizzaType === pizza.id);
+    price = intl.format(
+      selectedPizza.sizes ? selectedPizza.sizes[pizzaSize] : "",
+    );
+  }
+
   useEffect(() => {
     fetchPizzaTypes();
   }, []);
+
+  async function fetchPizzaTypes() {
+    const pizzasRes = await fetch("/api/pizzas");
+    const pizzasJson = await pizzasRes.json();
+    setPizzaTypes(pizzasJson);
+    setLoading(false);
+  }
 
   return (
     <div className="order-page">
       <div className="order">
         <h2>Create Order</h2>
-        {/* We use onSubmit for better accesibility, to use enter key and click the form button */}
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -66,13 +74,13 @@ export default function Order() {
             <div>
               <label htmlFor="pizza-type">Pizza Type</label>
               <select
+                onChange={(e) => setPizzaType(e.target.value)}
                 name="pizza-type"
                 value={pizzaType}
-                onChange={({ target: { value } }) => setPizzaType(value)}
               >
-                {pizzaTypes.map((pizzaType) => (
-                  <option value={pizzaType.id} key={pizzaType.id}>
-                    {pizzaType.name}
+                {pizzaTypes.map((pizza) => (
+                  <option key={pizza.id} value={pizza.id}>
+                    {pizza.name}
                   </option>
                 ))}
               </select>
@@ -82,34 +90,34 @@ export default function Order() {
               <div>
                 <span>
                   <input
+                    onChange={(e) => setPizzaSize(e.target.value)}
                     checked={pizzaSize === "S"}
                     type="radio"
                     name="pizza-size"
                     value="S"
                     id="pizza-s"
-                    onChange={({ target: { value } }) => setPizzaSize(value)}
                   />
                   <label htmlFor="pizza-s">Small</label>
                 </span>
                 <span>
                   <input
+                    onChange={(e) => setPizzaSize(e.target.value)}
                     checked={pizzaSize === "M"}
                     type="radio"
                     name="pizza-size"
                     value="M"
                     id="pizza-m"
-                    onChange={({ target: { value } }) => setPizzaSize(value)}
                   />
                   <label htmlFor="pizza-m">Medium</label>
                 </span>
                 <span>
                   <input
+                    onChange={(e) => setPizzaSize(e.target.value)}
                     checked={pizzaSize === "L"}
                     type="radio"
                     name="pizza-size"
                     value="L"
                     id="pizza-l"
-                    onChange={({ target: { value } }) => setPizzaSize(value)}
                   />
                   <label htmlFor="pizza-l">Large</label>
                 </span>
@@ -117,28 +125,21 @@ export default function Order() {
             </div>
             <button type="submit">Add to Cart</button>
           </div>
-          <div className="order-pizza">
-            {loading ? (
-              // If this loading show this crafted with love and care run by legal
-              <h1>Loading pizza lol...</h1>
-            ) : (
-              <div>
-                <Pizza
-                  name={selectedPizza.name}
-                  description={selectedPizza.description}
-                  image={selectedPizza.image}
-                />
-                <p>{price}</p>
-              </div>
-            )}
-          </div>
+          {loading ? (
+            <h3>LOADING …</h3>
+          ) : (
+            <div className="order-pizza">
+              <Pizza
+                name={selectedPizza.name}
+                description={selectedPizza.description}
+                image={selectedPizza.image}
+              />
+              <p>{price}</p>
+            </div>
+          )}
         </form>
       </div>
-      {loading ? (
-        <h2>Loading ...</h2>
-      ) : (
-        <Cart cart={cart} checkout={checkout} />
-      )}
+      {loading ? <h2>LOADING …</h2> : <Cart checkout={checkout} cart={cart} />}
     </div>
   );
 }
