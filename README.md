@@ -1,5 +1,7 @@
 ### Padre Gino's Pizza
-https://github.com/user-attachments/assets/a6723421-7f28-4f5d-9252-3ba3280acc0c
+
+https://github.com/user-attachments/assets/c69aa2a0-70da-45ff-9a16-15c4f8bac62a
+
 ## Complete Intro to React, v9 Course
 
 This is a companion repository for the [Complete Intro to React, v9 ](https://frontendmasters.com/courses/complete-react-v9/)course on Frontend Masters.
